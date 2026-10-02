@@ -1,6 +1,13 @@
 package REST_API.entity;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
 public class Student {
+    @Id
     int id;
     String name;
     String address;

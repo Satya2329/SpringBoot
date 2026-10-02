@@ -1,25 +1,69 @@
 package REST_API.controller;
 import REST_API.entity.Student;
+import REST_API.service.StudentService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class StudentController {
 
-    @GetMapping("/home")
-    //@RequestMapping(value = "/home", method = RequestMethod.GET)
-    public Student getStudent() {
+    private StudentService ss;
 
-        Student s1 = new Student();
-        s1.setId(1);
-        s1.setName("Satyapriya");
-        s1.setAddress("BBsr");
-
-        return s1;
+    public StudentController(StudentService ss) {
+        this.ss = ss;
     }
 
-    @PostMapping("/createStudent")
-    public String createStudent(@RequestBody Student s) {
-        Student s1 = s;
-        return "Completed";
+
+    @PostMapping("/create")
+    public String create(@RequestBody Student s){
+        ss.createStudent(s);
+        return "success";
     }
+
+    @GetMapping("/allStudents")
+    public ResponseEntity<List<Student>> allData(){
+        List<Student> allstudent=null;
+        try{
+            allstudent=ss.getAllStudent();
+            return  ResponseEntity.of(Optional.of(allstudent));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.status(HttpStatus.IM_USED).build();
+    }
+
+    @GetMapping("/getStudent/{id}")
+    public ResponseEntity<Student> getStudent(@PathVariable int id){
+        Student s1=null;
+        try{
+            s1=ss.getStudentWithId(id);
+            return ResponseEntity.of(Optional.of(s1));
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
+
+    @PutMapping("/update/{id}")
+    public String update(@PathVariable int id,@RequestBody Student s){
+        boolean x=ss.updateStudent(id,s);
+        if (x) {
+            return "success";
+        }
+        return "Data Not found";
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public String delete(@PathVariable int id){
+        boolean x=ss.deleteStudent(id);
+        if (x) {
+            return "success";
+        }
+        return "data Not found";
+    }
+
 }
