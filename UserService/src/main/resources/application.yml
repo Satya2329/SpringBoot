@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 server:
   port: 8080
 
@@ -19,3 +20,18 @@ eureka:
       defaultZone: http://localhost:1234/eureka
     instance:
       ip-address: true
+=======
+server:
+  port: 8080
+
+spring:
+  datasource:
+    username: root
+    password: Satya@2005
+    url: jdbc:mysql://localhost:3306/userservice
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+>>>>>>> 55da827e08f63666ea875620ecbafcf664e5043b
